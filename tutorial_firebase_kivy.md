@@ -1,36 +1,26 @@
-# Tutorial CRUD Produk dengan Kivy dan Firebase
+# Tutorial CRUD Kivy dengan Firebase
 
-## Daftar Isi
-1. Instalasi Dependencies
-2. Struktur Project
-3. Implementasi Kode
-4. Cara Menjalankan
-5. Testing
+## Langkah 1: Setup Project
 
-## 1. Instalasi Dependencies
-
-Install packages yang diperlukan menggunakan pip:
+### 1.1 Install Dependencies
 ```bash
 pip install kivy
 pip install pyrebase4
 ```
 
-## 2. Struktur Project
-
-Buat folder project dan buat file-file berikut:
+### 1.2 Buat Struktur Folder
 ```
 project_folder/
     ├── main.py
     ├── views.py
     ├── database.py
     ├── config.py
-    ├── product.kv
-    └── .gitignore
+    └── product.kv
 ```
 
-## 3. Implementasi Kode
+## Langkah 2: Konfigurasi Firebase
 
-### 3.1 Konfigurasi Firebase (config.py)
+Buat file `config.py`:
 ```python
 def get_firebase_config():
     config = {
@@ -42,7 +32,9 @@ def get_firebase_config():
     return config
 ```
 
-### 3.2 Database Handler (database.py)
+## Langkah 3: Database Handler
+
+Buat file `database.py`:
 ```python
 import pyrebase
 from config import get_firebase_config
@@ -88,7 +80,9 @@ class Database:
             raise e
 ```
 
-### 3.3 Views (views.py)
+## Langkah 4: Views
+
+Buat file `views.py`:
 ```python
 from kivy.uix.screenmanager import Screen
 from kivy.properties import ObjectProperty, StringProperty
@@ -132,26 +126,15 @@ class ProductItem(BoxLayout):
         # Button layout
         button_layout = BoxLayout(orientation='vertical', size_hint_x=0.3, spacing=5)
         
-        # Edit button
-        edit_btn = Button(
-            text='Edit',
-            size_hint_y=0.5,
-            background_color=(0.3, 0.5, 0.9, 1)
-        )
+        edit_btn = Button(text='Edit', size_hint_y=0.5, background_color=(0.3, 0.5, 0.9, 1))
         edit_btn.bind(on_press=lambda x: edit_callback(product_id, product_data))
         
-        # Delete button
-        delete_btn = Button(
-            text='Hapus',
-            size_hint_y=0.5,
-            background_color=(0.9, 0.3, 0.3, 1)
-        )
+        delete_btn = Button(text='Hapus', size_hint_y=0.5, background_color=(0.9, 0.3, 0.3, 1))
         delete_btn.bind(on_press=lambda x: delete_callback(product_id))
 
         button_layout.add_widget(edit_btn)
         button_layout.add_widget(delete_btn)
 
-        # Add layouts to main layout
         self.add_widget(info_layout)
         self.add_widget(button_layout)
 
@@ -203,15 +186,13 @@ class ProductList(Screen):
         
         buttons = BoxLayout(size_hint_y=None, height=40, spacing=10)
         
-        # Cancel button
         cancel_btn = Button(text='Batal')
         cancel_btn.bind(on_press=confirm_popup.dismiss)
         
-        # Confirm button
         def confirm_delete(instance):
             try:
                 Database.delete_product(product_id)
-                self.load_products()  # Reload the list
+                self.load_products()
                 confirm_popup.dismiss()
                 self.show_popup('Sukses', 'Produk berhasil dihapus!')
             except Exception as e:
@@ -249,29 +230,17 @@ class AddProduct(Screen):
         
         if nama and harga and stok:
             try:
-                # Konversi input ke format yang sesuai
-                harga_float = float(harga)
-                stok_int = int(stok)
-                
-                # Create product data
                 product_data = {
                     'nama': nama,
-                    'harga': harga_float,
-                    'stok': stok_int
+                    'harga': float(harga),
+                    'stok': int(stok)
                 }
                 
-                # Push to Firebase
                 Database.add_product(product_data)
-                
-                # Clear inputs
                 self.name_input.text = ''
                 self.price_input.text = ''
                 self.stock_input.text = ''
-                
-                # Show success popup
                 self.show_popup('Sukses', 'Produk berhasil ditambahkan!')
-                
-                # Return to product list
                 self.manager.current = 'product_list'
             except ValueError:
                 self.show_popup('Error', 'Harga dan stok harus berupa angka!')
@@ -344,7 +313,9 @@ class EditProduct(Screen):
         self.manager.current = 'product_list'
 ```
 
-### 3.4 KV File (product.kv)
+## Langkah 5: KV File
+
+Buat file `product.kv`:
 ```kv
 <ProductList>:
     container: container
@@ -475,4 +446,26 @@ class EditProduct(Screen):
             
             Button:
                 text: 'Update'
-                on
+                on_press: root.update_product()
+```
+
+## Langkah 6: Main App
+
+Buat file `main.py`:
+```python
+from kivy.app import App
+from kivy.lang import Builder
+from views import ProductList, AddProduct, EditProduct
+from kivy.uix.screenmanager import ScreenManager
+
+class MainApp(App):
+    def build(self):
+        Builder.load_file('product.kv')
+        sm = ScreenManager()
+        sm.add_widget(ProductList(name='product_list'))
+        sm.add_widget(AddProduct(name='add_product'))
+        sm.add_widget(EditProduct(name='edit_product'))
+        return sm
+
+if __name__ == '__main__':
+    MainApp().run()
