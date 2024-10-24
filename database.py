@@ -9,10 +9,11 @@ class Database:
 
     @staticmethod
     def get_all_products():
+        
         try:
             products = Database.db.child("products").get()
             if products.each():
-                return [product.val() for product in products.each()]
+                return [(product.key(), product.val()) for product in products.each()]
             return []
         except Exception as e:
             print(f"Error getting products: {e}")
