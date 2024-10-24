@@ -1,9 +1,8 @@
-# config.py
 def get_firebase_config():
     config = {
-      "apiKey": "AIzaSyCvLjuLnSEDs4UR2lCykeG5UpxuSkwcVPU",
-    "authDomain": "projek-python-sample.firebaseapp.com",
-    "databaseURL": "https://projek-python-sample-default-rtdb.firebaseio.com",
-    "storageBucket": "projek-python-sample.appspot.com"
+        "apiKey": "your-api-key",
+        "authDomain": "your-app-id.firebaseapp.com",
+        "databaseURL": "https://your-app-id.firebaseio.com",
+        "storageBucket": "your-app-id.appspot.com",
     }
     return config
