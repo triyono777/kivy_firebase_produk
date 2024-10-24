@@ -1,0 +1,79 @@
+# product.kv
+<ProductList>:
+    container: container
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 10
+        spacing: 10
+        
+        Label:
+            text: 'Daftar Produk'
+            size_hint_y: None
+            height: 50
+            font_size: 24
+        
+        ScrollView:
+            GridLayout:
+                id: container
+                cols: 1
+                spacing: 10
+                size_hint_y: None
+                height: self.minimum_height
+        
+        Button:
+            text: 'Tambah Produk'
+            size_hint_y: None
+            height: 50
+            on_press: root.show_add_product()
+
+<AddProduct>:
+    name_input: name_input
+    price_input: price_input
+    stock_input: stock_input
+    
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 10
+        spacing: 10
+        
+        Label:
+            text: 'Tambah Produk Baru'
+            size_hint_y: None
+            height: 50
+            font_size: 24
+        
+        TextInput:
+            id: name_input
+            hint_text: 'Nama Produk'
+            size_hint_y: None
+            height: 40
+            multiline: False
+        
+        TextInput:
+            id: price_input
+            hint_text: 'Harga'
+            size_hint_y: None
+            height: 40
+            multiline: False
+            input_filter: 'float'
+        
+        TextInput:
+            id: stock_input
+            hint_text: 'Stok'
+            size_hint_y: None
+            height: 40
+            multiline: False
+            input_filter: 'int'
+        
+        BoxLayout:
+            size_hint_y: None
+            height: 50
+            spacing: 10
+            
+            Button:
+                text: 'Batal'
+                on_press: root.cancel()
+            
+            Button:
+                text: 'Tambah'
+                on_press: root.add_product()
