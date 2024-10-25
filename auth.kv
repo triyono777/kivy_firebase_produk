@@ -1,0 +1,41 @@
+<LoginScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: 'Login'
+        TextInput:
+            id: login_email
+            hint_text: 'Enter email'
+            multiline: False
+        TextInput:
+            id: login_password
+            hint_text: 'Enter password'
+            password: True
+            multiline: False
+        Button:
+            text: 'Login'
+            on_release: root.login(login_email.text, login_password.text)
+        Button:
+            text: 'Go to Register'
+            on_release: app.root.current = 'register'
+
+<RegisterScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: 'Register'
+        TextInput:
+            id: register_email
+            hint_text: 'Enter email'
+            multiline: False
+        TextInput:
+            id: register_password
+            hint_text: 'Enter password'
+            password: True
+            multiline: False
+        Button:
+            text: 'Register'
+            on_release: root.register(register_email.text, register_password.text)
+        Button:
+            text: 'Back to Login'
+            on_release: app.root.current = 'login'
