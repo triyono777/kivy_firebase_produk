@@ -16,9 +16,9 @@ class AuthService:
             user_id = user['localId']
             role = db.child("users").child(user_id).child("role").get().val()
 
-            if role != 'admin':
-                print("Access Denied: Only admins can access this application.")
-                return False, "Access Denied: Only admins can access this application."
+            # if role != 'admin':
+            #     print("Access Denied: Only admins can access this application.")
+            #     return False, "Access Denied: Only admins can access this application."
             
             App.get_running_app().user_role = role
             return True, "Login successful"
@@ -26,10 +26,11 @@ class AuthService:
             print(f"Login failed: {e}")
             return False, str(e)
 
-    def register(self, email, password, role='user'):
+    def register(self, email, password, role='pengguna'):
         try:
             user = auth.create_user_with_email_and_password(email, password)
             user_id = user['localId']
+            # proses menyimpan di realtime database
             db.child("users").child(user_id).set({"email": email, "role": role})
             print("Registration successful")
             return True, "Registration successful"
