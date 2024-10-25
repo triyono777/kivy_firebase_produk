@@ -30,6 +30,7 @@
     name_input: name_input
     price_input: price_input
     stock_input: stock_input
+    image_preview: image_preview
     
     BoxLayout:
         orientation: 'vertical'
@@ -41,6 +42,48 @@
             size_hint_y: None
             height: 50
             font_size: 24
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: 200
+            spacing: 10
+            padding: [0, 10]
+
+            # Image preview area
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_x: 0.4
+                canvas.before:
+                    Color:
+                        rgba: 0.9, 0.9, 0.9, 1
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+
+                AsyncImage:
+                    id: image_preview
+                    source: ''
+                    allow_stretch: True
+                    keep_ratio: True
+
+            # Image buttons
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_x: 0.6
+                spacing: 10
+                
+                Button:
+                    text: 'Pilih Gambar'
+                    size_hint_y: None
+                    height: 50
+                    on_press: root.choose_image()
+                
+                Button:
+                    text: 'Hapus Gambar'
+                    size_hint_y: None
+                    height: 50
+                    on_press: root.clear_image()
         
         TextInput:
             id: name_input
@@ -64,6 +107,9 @@
             height: 40
             multiline: False
             input_filter: 'int'
+        
+        Widget:
+            size_hint_y: 0.1
         
         BoxLayout:
             size_hint_y: None
@@ -76,12 +122,14 @@
             
             Button:
                 text: 'Tambah'
+                background_color: 0.2, 0.8, 0.2, 1
                 on_press: root.add_product()
 
 <EditProduct>:
     name_input: name_input
     price_input: price_input
     stock_input: stock_input
+    image_preview: image_preview
     
     BoxLayout:
         orientation: 'vertical'
@@ -93,6 +141,48 @@
             size_hint_y: None
             height: 50
             font_size: 24
+        
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: 200
+            spacing: 10
+            padding: [0, 10]
+
+            # Image preview area
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_x: 0.4
+                canvas.before:
+                    Color:
+                        rgba: 0.9, 0.9, 0.9, 1
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+
+                AsyncImage:
+                    id: image_preview
+                    source: ''
+                    allow_stretch: True
+                    keep_ratio: True
+
+            # Image buttons
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_x: 0.6
+                spacing: 10
+                
+                Button:
+                    text: 'Pilih Gambar'
+                    size_hint_y: None
+                    height: 50
+                    on_press: root.choose_image()
+                
+                Button:
+                    text: 'Hapus Gambar'
+                    size_hint_y: None
+                    height: 50
+                    on_press: root.clear_image()
         
         TextInput:
             id: name_input
@@ -117,6 +207,9 @@
             multiline: False
             input_filter: 'int'
         
+        Widget:
+            size_hint_y: 0.1
+        
         BoxLayout:
             size_hint_y: None
             height: 50
@@ -128,4 +221,5 @@
             
             Button:
                 text: 'Update'
+                background_color: 0.2, 0.8, 0.2, 1
                 on_press: root.update_product()
