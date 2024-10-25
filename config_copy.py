@@ -1,4 +1,6 @@
 # config.py
+# silakan ganti ke config.py yang anda miliki
+# dan setting dibawah ini
 def get_firebase_config():
     config = {
         "apiKey": "----",
